@@ -20,6 +20,7 @@ function UserModal({ user, onClose }) {
             </div>
   
             <div className="modal-footer">
+           
               <button className="btn btn-secondary" onClick={onClose}>
                 Close
               </button>

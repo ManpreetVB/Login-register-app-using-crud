@@ -1,4 +1,18 @@
-function EditUserModal({ user, onClose }) {
+import { useState } from "react";
+function EditUserModal({ user, onClose,onUpdate }) {
+  
+  const [userDetails, setUserDetails] = useState(user);
+
+  const handleChange = (e) => {
+    setUserDetails({
+      ...userDetails,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleUpdateUser = () => {
+    onUpdate(userDetails);
+  }
     return (
       <div className="modal show d-block" style={{ background: "#00000080" }}>
         <div className="modal-dialog">
@@ -10,12 +24,19 @@ function EditUserModal({ user, onClose }) {
             </div>
   
             <div className="modal-body">
-              <p><input type ="text" name="name" value={user.userName}/></p>
-              <p><input type ="email" name="email" value={user.email}/></p>
-              <p><input type ="password" name="password" value={user.password}/></p>
-              <p><input type ="text" name="gender" value={user.gender}/></p>
-              <p><input type ="text" name="address" value={user.address}/></p>
-              <p><input type ="text" name="status" value= {user.isActive}/></p>   
+              <p><input type ="text" className="container" name="userName" value={userDetails.userName} onChange={handleChange}/></p>
+              <p><input type ="email" className="container" name="email" value={userDetails.email} onChange={handleChange}/></p>
+              <p><input type ="password" className="container" name="password" value={userDetails.password} onChange={handleChange}/></p>
+              <p><select className="container" name="gender"value={userDetails.gender} onChange={handleChange}>
+              <option value="">Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select></p>
+              <p><input type ="text" className="container" name="address" value={userDetails.address} onChange={handleChange}/></p>
+              <p><select className="container" name="status" value= {userDetails.isActive} onChange={handleChange}>
+                <option value={1}>Active</option>
+              <option value={0}>Deactive</option>
+            </select></p>   
                 
                 
               
@@ -23,6 +44,9 @@ function EditUserModal({ user, onClose }) {
             </div>
   
             <div className="modal-footer">
+            <button className="btn btn-primary" onClick={handleUpdateUser}>
+                Update
+              </button>
               <button className="btn btn-secondary" onClick={onClose}>
                 Close
               </button>

@@ -40,6 +40,22 @@ function AdminDashboard() {
       alert("Approve failed");
     }
   }
+
+  async function handleUpdateUser(updatedUser) {
+    console.log("UPDATE PAYLOAD 👉", updatedUser);
+  
+    try {
+      await UpdateUserService(updatedUser);
+      alert("User updated successfully");
+      setShowEditModal(false);
+      fetchUsers();
+    } catch (error) {
+      console.error(error);
+      alert("Update failed");
+    }
+  }
+  
+  
   
   async function DeleteUser(UserId) {
     if (!window.confirm("Are you sure to delete?")) return;
@@ -83,7 +99,7 @@ function AdminDashboard() {
               <td>{user.gender}</td>
               <td>{user.address}</td>
              
-              <td>{user.isActive===1?'Active':'deactive'}</td>
+              <td>{user.isActive===1?'Active':'Deactive'}</td>
               <td>
                 <button
                   className="btn btn-info btn-sm me-2"
@@ -103,8 +119,8 @@ function AdminDashboard() {
         setSelectedUser(user);
         setShowEditModal(true);
       }}
-  >
-    update
+  >Edit
+   
   </button>
 )}
 
@@ -131,6 +147,7 @@ function AdminDashboard() {
         <EditUserModal
           user={selectedUser}
           onClose={() => setShowEditModal(false)}
+          onUpdate={handleUpdateUser}
         />
       )}
     </div>
