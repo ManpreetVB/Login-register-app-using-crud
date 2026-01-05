@@ -21,3 +21,8 @@ export const DeleteUserService = async (userId) => {
     return await axios.delete(url);
   };
   
+  export const AddUserService = async(data) => {
+    const url = `${baseUrl}/User`; 
+    const response = await axios.post(url, data);
+    return response; // full response
+}

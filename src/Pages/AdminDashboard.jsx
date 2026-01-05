@@ -3,9 +3,11 @@ import UserModal from "../components/UserModal";
 import {
     GetAllUsersService,
     UpdateUserService ,
-    DeleteUserService 
+    DeleteUserService ,
+    AddUserService
 } from "../Services/UserServices";
 import EditUserModal from "../components/EditUserModal";
+import AddUserModal from "../components/AddUserModal";
 
 function AdminDashboard() {
   const [users, setUsers] = useState([]);
@@ -13,10 +15,26 @@ function AdminDashboard() {
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showAddModal, setShowAddModal] = useState(false);
+
 
   useEffect(() => {
     fetchUsers();
   }, []);
+
+async function handleAddUser(newUser) {
+  try {
+    await AddUserService(newUser);
+    alert("User added successfully");
+    setShowAddModal(false);
+    fetchUsers();
+  } catch (error) {
+    console.error(error);
+    alert("Add user failed");
+  }
+}
+
+
 
   async function fetchUsers() {
     try {
@@ -42,7 +60,7 @@ function AdminDashboard() {
   }
 
   async function handleUpdateUser(updatedUser) {
-    console.log("UPDATE PAYLOAD 👉", updatedUser);
+    console.log( updatedUser);
   
     try {
       await UpdateUserService(updatedUser);
@@ -72,8 +90,12 @@ function AdminDashboard() {
 
   return (
     <div className="container mt-4">
+      <div className="d-flex justify-content-between align-items-center">
       <h2>Admin Panel - User Management</h2>
-
+        <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
+          Add User
+       </button>
+</div>
       <table className="table table-bordered mt-3">
         <thead className="table-dark">
           <tr>
@@ -150,6 +172,13 @@ function AdminDashboard() {
           onUpdate={handleUpdateUser}
         />
       )}
+      {showAddModal && (
+  <AddUserModal
+    onClose={() => setShowAddModal(false)}
+    onAdd={handleAddUser}
+  />
+)}
+
     </div>
   );
 }
